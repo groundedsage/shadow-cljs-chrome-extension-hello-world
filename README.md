@@ -17,7 +17,7 @@ yarn dev
 
 To view the background page click here
 
-![Hello World Extension background page](images/chrome-extension.jpg)
+![Hello World Extension background page](images/chrome-extension.png)
 
 To view the datalog panel open the Chrome console with either of these options.
 - Right click anywhere on the page -> Inspect
