@@ -1,0 +1,35 @@
+{:manifest_version        2
+ :name                    "Hello Devtool Panel"
+ :version                 "0.0.0"
+ :description             "A Hello world for shadow-cljs chrome devtool panel"
+ ;;  :icons                   {"16"  "favicon.png"
+;;                            "32"  "favicon.png"
+;;                            "48"  "favicon.png"
+;;                            "128" "favicon.png"}
+
+ :shadow/outputs           {:content-script
+                            {:chrome/options {:matches ["<all_urls>"]
+                                              :run_at  "document_idle"}
+                             :entries        [chrome.extension.content-script.main]}
+
+                            :background
+                            {:chrome/options {:persistent false}
+                             :entries        [chrome.extension.background.main]}}
+
+ :permissions             ["file:///*" "http://*/*" "https://*/*"]
+ :externally-connectable  {:ids ["*"]}
+ :content-security-policy ["default-src 'self';"
+                           "script-src 'self' 'unsafe-eval' http://localhost:9630;"
+                           "connect-src * data: blob: filesystem:;"
+                           "style-src 'self' data: chrome-extension-resource: 'unsafe-inline';"
+                           "img-src 'self' data: chrome-extension-resource:;"
+                           "frame-src 'self' data: chrome-extension-resource:;"
+                           "font-src 'self' data: chrome-extension-resource:;"
+                           "media-src * data: blob: filesystem:;"]
+ :browser-action          {
+                        ;;    :default-icon  {"16"  "favicon.png"
+                        ;;                    "32"  "favicon.png"
+                        ;;                    "48"  "favicon.png"
+                        ;;                    "128" "favicon.png"}
+                           :default-popup "popups/disabled.html"}
+ :devtools-page           "devtools.html"}

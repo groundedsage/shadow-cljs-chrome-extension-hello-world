@@ -1,0 +1,9 @@
+.DS_store
+.lsp
+.shadow-cljs
+node_modules
+.cpcache
+
+shells/chrome/js
+shells/chrome/out
+shells/chrome/manifest.json

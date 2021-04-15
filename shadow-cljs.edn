@@ -1,0 +1,15 @@
+;; shadow-cljs configuration
+{:deps true
+ 
+ :builds {:chrome {:target :chrome-extension
+                   :compiler-options {:closure-output-charset "US-ASCII"
+                                      :source-map-inline true}
+                   :extension-dir "shells/chrome"
+                   :devtools {:devtools-url "http://localhost:9630"}}
+          
+          :chrome-devtool {:target           :browser
+                           :output-dir       "shells/chrome/js/devtool"
+                           :asset-path       "js/devtool"
+                           :compiler-options {:closure-output-charset "US-ASCII"}
+                           :devtools         {:devtools-url "http://localhost:9630"}
+                           :modules          {:main {:entries [chrome.extension.devtool.main]}}}}}
