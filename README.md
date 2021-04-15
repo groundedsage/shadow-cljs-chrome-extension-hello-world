@@ -28,8 +28,6 @@ To view the datalog panel open the Chrome console with either of these options.
 
 You can connect a repl to each process by opening new windows in your terminal and doing the following.
 
-To connect to the background page
-`yarn repl-background`
 
-To connect to the devtool panel in the chrome console
-`yarn repl-panel`
+- `yarn repl-background` - for the background page
+- `yarn repl-panel` - for the devtool panel console
