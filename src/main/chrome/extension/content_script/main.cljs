@@ -2,13 +2,14 @@
   (:require [goog.object :as gobj]
             [cljs.core.async :as async :refer [go go-loop chan <! put!]]))
 
-
- (defn init []
-   (println "Content script init"))
+(println ::loaded)
 
 
-(let [port (js/chrome.runtime.connect #js {:name "hello-console-remote"})]
-  (.addListener (gobj/get port "onMessage")
+(def port (js/chrome.runtime.connect #js {:name "hello-console-remote"}))
+
+(.postMessage port #js {:hello-console-panel-message "test"})
+
+(.addListener (gobj/get port "onMessage")
                 (fn [msg]
                   (println "MSG" msg)
-                  (.postMessage js/window "pinging ya back" "*"))))
+                  (.postMessage js/window "pinging ya back" "*")))

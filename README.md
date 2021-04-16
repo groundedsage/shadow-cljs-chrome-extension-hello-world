@@ -32,6 +32,14 @@ You can connect a repl to each process by opening new windows in your terminal a
 - `yarn repl-background` - for the background page
 - `yarn repl-panel` - for the devtool panel console
 
+### Tips
+
+These are convenient things to know for working at the repl
+- `(require 'clojure.string 'clojure.repl)`
+- `(namespace ::x)` - find out the namespace
+- `(clojure.repl/dir my-ns)` - replace `my-ns` with the ns not using a string. This will list the vars of that namespace
+
+
 ## Quirks
 
 Execution of code inside of `content-script` will not run on `www.google.com`

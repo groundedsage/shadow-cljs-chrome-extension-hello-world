@@ -5,13 +5,15 @@
 
 (println ::loaded)
 
+(defonce tools-conns* (atom {}))
+
 
 (defn handle-devtool-message [message _port]
   (println "handling devtool message:" (gobj/get message "name"))
   (cond
-    ;; (= "init" (gobj/get message "name"))
-    ;; (let [tab-id (gobj/get message "tab-id")]
-    ;;   (js/console.log #js {:name "init" :tab-id tab-id :message message}))
+    (= "init" (gobj/get message "name"))
+    (let [tab-id (gobj/get message "tab-id")]
+      (js/console.log #js {:name "init" :tab-id tab-id :message message}))
 
     (gobj/getValueByKeys message "hello-console-panel-message")
     (let [tab-id      (gobj/get message "tab-id")]
@@ -19,10 +21,10 @@
 
 
 (defn handle-remote-message [message port]
-  (js/console.log "handle-remote-message" message port)
+  (js/console.log "handle-remote-message:" #_message #_port)
   (cond
     ; send message to devtool
-    (gobj/getValueByKeys message "hello-console-remote-message")
+    (gobj/getValueByKeys message "hello-console-remote")
     (let [tab-id (gobj/getValueByKeys port "sender" "tab" "id")]
       (js/console.log {:tab-id tab-id :message message})
 
@@ -32,13 +34,25 @@
 
 (js/chrome.runtime.onConnect.addListener 
  (fn [port]
-   (js/console.log "port: " port)
-   (let [listener (partial handle-devtool-message port)]
-     (case (gobj/get port "name")
-    ;;  "hello-console-remote"
-    ;;  (.addListener (gobj/get port "onMessage") handle-remote-message)
-       "hello-console-panel"
+   (case (gobj/get port "name")
+     
+     "hello-console-remote"
+     (let [listener (partial handle-remote-message port)
+           tab-id   (gobj/getValueByKeys port "sender" "tab" "id")]
+        (js/console.log #js {:port port
+                             :tab-id tab-id})
        (.addListener (gobj/get port "onMessage") listener)
+       #_(.addListener (gobj/get port "onDisconnet")
+                     (fn [port]
+                       (.removeListener  (gobj/get port "onMessage") listener))))
+     
+     "hello-console-panel"
+     (let [listener (partial handle-devtool-message port)]
+       (js/console.log "devtool port: " port)
+       (.addListener (gobj/get port "onMessage") listener)
+       #_(.addListener (gobj/get port "onDisconnet")
+                     (fn [port]
+                       (.removeListener  (gobj/get port "onMessage") listener))))
 
 
-       (js/console.log "Ignoring connection" (gobj/get port "name"))))))
+     (js/console.log "Ignoring connection:" (gobj/get port "name")))))
